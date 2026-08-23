@@ -9,7 +9,16 @@ class AuthService {
             throw new Error('Email is already registered!');
         }
 
-        const user = new User(userData);
+        // Schema Enum Matching:
+        // Recruiter হলে Admin Approval এর জন্য 'pending'
+        // Candidate হলে সরাসরি 'approved'
+        const recruiterStatus = userData.role === 'recruiter' ? 'pending' : 'approved';
+
+        const user = new User({
+            ...userData,
+            recruiterStatus
+        });
+
         await user.save();
         return user;
     }
@@ -28,6 +37,16 @@ class AuthService {
 
         if (!user.isActive) {
             throw new Error('Your account is deactivated. Contact Admin.');
+        }
+
+        // Recruiter Admin Approval Guard Check
+        if (user.role === 'recruiter') {
+            if (user.recruiterStatus === 'pending') {
+                throw new Error('Your recruiter account is pending admin approval. Please wait for approval.');
+            }
+            if (user.recruiterStatus === 'rejected') {
+                throw new Error('Your recruiter account request was rejected by Admin.');
+            }
         }
 
         // Generate JWT Token

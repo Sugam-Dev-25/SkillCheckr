@@ -237,13 +237,17 @@ class RecruiterController {
         _id: assessmentId,
         recruiterId: req.user._id,
       });
+
       if (!assessment) {
         return res
           .status(404)
           .json({ success: false, message: "Assessment not found!" });
       }
 
-      const testLink = `${process.env.FRONTEND_URL || "http://localhost:3000"}/assessment/start/${assessment._id}`;
+      // Base URL ক্লিন করা ও ট্রেইলিং স্ল্যাশ বাদ দেওয়া
+      const rawUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+      const baseUrl = rawUrl.trim().replace(/\/$/, "");
+      const testLink = `${baseUrl}/assessment/start/${assessment._id}`;
 
       await emailService.sendAssessmentInvite(
         candidateEmail,
@@ -258,7 +262,7 @@ class RecruiterController {
     } catch (error) {
       return res.status(500).json({ success: false, message: error.message });
     }
-  }
+}
 }
 
 module.exports = new RecruiterController();

@@ -37,7 +37,6 @@
 
 const { Resend } = require('resend');
 
-// .env ফাইল থেকে API Key রিড করা হচ্ছে
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 class EmailService {
@@ -48,11 +47,30 @@ class EmailService {
                 to: [candidateEmail],
                 subject: `Invitation: Assessment for ${assessmentTitle}`,
                 html: `
-                    <div style="font-family: Arial, sans-serif; padding: 20px;">
-                        <h2>You're Invited to Take an Assessment!</h2>
-                        <p>Screening test: <strong>${assessmentTitle}</strong></p>
-                        <a href="${testLink}" style="padding: 10px 20px; background-color: #1e3a8a; color: white; text-decoration: none; border-radius: 5px;">Start Assessment</a>
-                    </div>
+                    <!DOCTYPE html>
+                    <html>
+                    <head><meta charset="utf-8"></head>
+                    <body style="font-family: Arial, sans-serif; padding: 20px; background-color: #ffffff;">
+                        <div style="max-width: 500px; margin: 0 auto; border: 1px solid #e2e8f0; padding: 24px; border-radius: 8px;">
+                            <h2 style="color: #0f172a; margin-top: 0;">You're Invited to Take an Assessment!</h2>
+                            <p style="color: #334155; font-size: 15px;">Screening test: <strong>${assessmentTitle}</strong></p>
+                            
+                            <!-- Clickable Link Table Structure -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-top: 20px; margin-bottom: 20px;">
+                                <tr>
+                                    <td align="center" style="border-radius: 6px; background-color: #1e3a8a;">
+                                        <a href="${testLink}" target="_blank" rel="noopener noreferrer" style="font-size: 14px; font-weight: bold; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; border: 1px solid #1e3a8a; display: inline-block;">
+                                            Start Assessment
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="color: #64748b; font-size: 13px;">If the button doesn't work, copy and paste this link into your browser:</p>
+                            <p style="font-size: 12px; word-break: break-all; color: #2563eb;">${testLink}</p>
+                        </div>
+                    </body>
+                    </html>
                 `
             });
             return data;

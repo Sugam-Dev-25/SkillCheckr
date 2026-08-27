@@ -8,6 +8,7 @@ const authRoutes = require('./app/routes/authRoutes');
 const candidateRoutes = require('./app/routes/candidateRoutes');
 const adminRoutes = require('./app/routes/adminRoutes');
 const recruiterRoutes = require('./app/routes/recruiterRoutes');
+const resumeRoutes = require('./app/routes/resumeRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,6 +34,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/candidate', candidateRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/recruiter', recruiterRoutes);
+app.use('/api/resume', resumeRoutes);
 
 // Default Health Check Route
 app.get('/', (req, res) => {

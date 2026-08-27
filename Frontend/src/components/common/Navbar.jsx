@@ -45,6 +45,9 @@ export default function Navbar() {
         <NavLink to="/what-benefits" className={navLinkStyle}>
           What benefits?
         </NavLink>
+        <NavLink to="/resume/create" className={navLinkStyle}>
+          Create Your Resume
+        </NavLink>
         <NavLink to="/contact" className={navLinkStyle}>
           Contact
         </NavLink>

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { 
   CheckCircle2, 
@@ -6,7 +7,8 @@ import {
   ArrowRight, 
   LayoutDashboard, 
   HelpCircle,
-  Sparkles
+  Sparkles,
+  Eye
 } from 'lucide-react';
 
 export default function ResultScreen() {
@@ -112,14 +114,26 @@ export default function ResultScreen() {
           </div>
         </div>
 
-        {/* Navigation Action */}
-        <button
-          onClick={() => navigate('/candidate/dashboard')}
-          className="w-full py-3 px-6 bg-blue-900 hover:bg-blue-950 text-white font-bold text-xs rounded-xl shadow-sm hover:shadow transition-all active:scale-95 flex items-center justify-center gap-2"
-        >
-          <span>Back to Candidate Dashboard</span>
-          <ArrowRight size={15} />
-        </button>
+        {/* Navigation Actions */}
+        <div className="space-y-3">
+          {/* Review Answers Button (UPDATED ROUTE HERE) */}
+          <button
+            onClick={() => navigate('/candidate/exam-review', { state: { result } })}
+            className="w-full py-3 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-sm hover:shadow transition-all active:scale-95 flex items-center justify-center gap-2"
+          >
+            <Eye size={16} />
+            <span>Review Answers</span>
+          </button>
+
+          {/* Dashboard Button */}
+          <button
+            onClick={() => navigate('/candidate/dashboard')}
+            className="w-full py-3 px-6 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+          >
+            <span>Back to Candidate Dashboard</span>
+            <ArrowRight size={15} />
+          </button>
+        </div>
 
       </div>
     </div>

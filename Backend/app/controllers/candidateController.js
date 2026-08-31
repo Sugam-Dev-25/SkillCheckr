@@ -91,9 +91,13 @@ class CandidateController {
 
       let totalScore = 0;
       const evaluatedAnswers = [];
+      const formattedUserAnswers = {}; // 🔹 Frontend-এর সহজ অ্যাক্সেসের জন্য Map Structure
 
       // Auto Evaluation Logic
-      for (const item of userAnswers) {
+      for (const item of userAnswers || []) {
+        // Map-এ রাখছি যাতে Frontend userAnswers[q._id] করে সরাসরি পেতে পারে
+        formattedUserAnswers[item.questionId] = item.selectedAnswer;
+
         const questionObj = assessment.questions.find(
           (q) => q._id.toString() === item.questionId,
         );
@@ -142,6 +146,7 @@ class CandidateController {
 
       await attempt.save();
 
+      // 🔴 মূল পরিবর্তন: Response-এ questions এবং formattedUserAnswers যোগ করা হলো
       return res.status(200).json({
         success: true,
         message: "Assessment submitted successfully!",
@@ -152,6 +157,8 @@ class CandidateController {
           passingMarks: assessment.passingMarks,
           isPassed: attempt.isPassed,
           status: attempt.status,
+          userAnswers: formattedUserAnswers, // { "q_id1": "Option Text/Index", ... }
+          questions: assessment.questions, // 🔹 Frontend-এ Render করার জন্য Full Questions Array
         },
       });
     } catch (error) {
@@ -200,12 +207,10 @@ class CandidateController {
       }
 
       if (!attempt.isPassed) {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "Certificate only available for passed candidates!",
-          });
+        return res.status(400).json({
+          success: false,
+          message: "Certificate only available for passed candidates!",
+        });
       }
 
       const pdfBuffer = await pdfService.generateCertificate(

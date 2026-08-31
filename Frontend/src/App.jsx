@@ -40,6 +40,7 @@ import Unauthorized from "./pages/Unauthorized";
 import Footer from "./components/common/Footer";
 import ResumeForm from "./pages/resume/ResumeForm";
 import ResumeList from "./pages/resume/ResumeList";
+import ExamReview from "./pages/candidate/ExamReview";
 
 function AppLayout() {
   const { user } = useAuth();
@@ -113,6 +114,7 @@ function AppLayout() {
               path="/assessment/start/:assessmentId"
               element={<ExamScreen />}
             />
+            <Route path="/candidate/exam-review" element={<ExamReview/> } />
           </Route>
 
           {/* Fallback */}
